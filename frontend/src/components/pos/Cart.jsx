@@ -1,193 +1,138 @@
-import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
-import { motion } from "framer-motion";
-
-const Cart = ({
-  cartItems = [],
-  onIncrease,
-  onDecrease,
-  onRemove,
-}) => {
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+function Cart({
+  cart,
+  increaseQty,
+  decreaseQty,
+  openPayment,
+}) {
+  const total = cart.reduce(
+    (sum, item) =>
+      sum + item.price * item.quantity,
     0
   );
 
+  const subtotal = total;
+  const tax = Math.round(subtotal * 0.05);
+  const discount = 0;
+
+  const grandTotal =
+    subtotal + tax - discount;
+
   return (
-    <div
-      className="
-        h-full
-        bg-[#111827]
-        border border-slate-800
-        rounded-3xl
-        flex flex-col
-      "
-    >
-      {/* Header */}
-      <div className="p-5 border-b border-slate-800">
-        <h2 className="text-xl font-bold text-white">
-          Cart
-        </h2>
+    <div className="bg-[#111827] border border-white/10 rounded-3xl p-6 shadow-2xl backdrop-blur-md">
 
-        <p className="text-slate-400 text-sm mt-1">
-          {cartItems.length} Items
-        </p>
-      </div>
+      <h2 className="text-2xl font-bold text-white mb-5">
+        Order Summary
+      </h2>
 
-      {/* Cart Items */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {cartItems.length === 0 ? (
-          <div className="h-full flex flex-col justify-center items-center">
-            <div className="text-6xl mb-4">🛒</div>
-
-            <h3 className="text-white text-lg font-semibold">
-              Cart is Empty
-            </h3>
-
-            <p className="text-slate-500 mt-2 text-center">
-              Add products to start creating an order
-            </p>
+      {cart.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">
+            🛒
           </div>
-        ) : (
-          <div className="space-y-4">
-            {cartItems.map((item) => (
-              <motion.div
-                key={item.id}
-                initial={{
-                  opacity: 0,
-                  y: 10,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                className="
-                  bg-[#1F2937]
-                  rounded-2xl
-                  p-4
-                "
-              >
-                {/* Product Info */}
-                <div className="flex justify-between">
-                  <div>
-                    <h3 className="text-white font-medium">
-                      {item.name}
-                    </h3>
 
-                    <p className="text-orange-500 font-semibold mt-1">
-                      ₹{item.price}
-                    </p>
-                  </div>
+          <h3 className="text-white text-lg font-semibold">
+            Cart is Empty
+          </h3>
+
+          <p className="text-slate-400 mt-2">
+            Add products to start billing
+          </p>
+        </div>
+      ) : (
+        <div className="max-h-72 overflow-y-auto pr-2">
+          {cart.map((item) => (
+            <div
+              key={item.id}
+              className="p-4 rounded-2xl mb-3 bg-white/5 border border-white/10 hover:border-orange-500/40 transition-all duration-300"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-semibold text-white">
+                    {item.name}
+                  </p>
+
+                  <p className="text-sm text-slate-400">
+                    ₹{item.price}
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-center">
+                  <button
+                    onClick={() =>
+                      decreaseQty(item.id)
+                    }
+                    className="w-8 h-8 rounded-full bg-orange-500/20 hover:bg-orange-500 hover:text-black transition-all"
+                  >
+                    -
+                  </button>
+
+                  <span className="font-bold text-white">
+                    {item.quantity}
+                  </span>
 
                   <button
                     onClick={() =>
-                      onRemove(item.id)
+                      increaseQty(item.id)
                     }
-                    className="
-                      text-red-500
-                      hover:text-red-400
-                    "
+                    className="w-8 h-8 rounded-full bg-orange-500/20 hover:bg-orange-500 hover:text-black transition-all"
                   >
-                    <FiTrash2 size={18} />
+                    +
                   </button>
                 </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-                {/* Quantity Controls */}
-                <div className="flex items-center justify-between mt-4">
-                  <div
-                    className="
-                      flex
-                      items-center
-                      gap-3
-                    "
-                  >
-                    <button
-                      onClick={() =>
-                        onDecrease(item.id)
-                      }
-                      className="
-                        h-8 w-8
-                        rounded-lg
-                        bg-slate-700
-                        text-white
-                        flex
-                        items-center
-                        justify-center
-                      "
-                    >
-                      <FiMinus />
-                    </button>
+      <div className="mt-6 border-t border-white/10 pt-5 text-white">
 
-                    <span className="text-white font-medium">
-                      {item.quantity}
-                    </span>
-
-                    <button
-                      onClick={() =>
-                        onIncrease(item.id)
-                      }
-                      className="
-                        h-8 w-8
-                        rounded-lg
-                        bg-orange-500
-                        text-white
-                        flex
-                        items-center
-                        justify-center
-                      "
-                    >
-                      <FiPlus />
-                    </button>
-                  </div>
-
-                  <span className="text-white font-semibold">
-                    ₹
-                    {item.price *
-                      item.quantity}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Footer */}
-      <div
-        className="
-          border-t border-slate-800
-          p-5
-        "
-      >
-        <div className="flex justify-between mb-4">
-          <span className="text-slate-400">
-            Total
-          </span>
-
-          <span className="text-2xl font-bold text-white">
-            ₹{total}
-          </span>
+        <div className="flex justify-between mb-2">
+          <span>Subtotal</span>
+          <span>₹{subtotal}</span>
         </div>
 
-        <button
-          disabled={cartItems.length === 0}
-          className="
-            w-full
-            bg-orange-500
-            hover:bg-orange-600
-            disabled:bg-slate-700
-            disabled:text-slate-500
-            text-white
-            py-3
-            rounded-xl
-            font-semibold
-            transition
-          "
-        >
-          Proceed to Checkout
-        </button>
+        <div className="flex justify-between mb-2">
+          <span>Tax (5%)</span>
+          <span>₹{tax}</span>
+        </div>
+
+        <div className="flex justify-between mb-2">
+          <span>Discount</span>
+          <span>₹{discount}</span>
+        </div>
+
+        <div className="flex justify-between text-lg font-bold mt-3">
+          <span>Total</span>
+          <span>₹{grandTotal}</span>
+        </div>
+
       </div>
+
+      <button
+        onClick={openPayment}
+        className="
+          mt-6
+          w-full
+          py-4
+          rounded-2xl
+          bg-gradient-to-r
+          from-orange-500
+          to-orange-600
+          font-bold
+          text-lg
+          shadow-lg
+          hover:shadow-orange-500/40
+          hover:scale-[1.02]
+          transition-all
+          duration-300
+        "
+      >
+        Send To Kitchen
+      </button>
+
     </div>
   );
-};
+}
 
 export default Cart;
