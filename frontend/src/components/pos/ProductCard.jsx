@@ -1,121 +1,59 @@
-import { motion } from "framer-motion";
-import { FiPlus } from "react-icons/fi";
-
-const ProductCard = ({
-  product,
-  onAddToCart,
-}) => {
+function ProductCard({ product, addToCart }) {
   return (
-    <motion.div
-      whileHover={{
-        y: -5,
-        scale: 1.02,
-      }}
-      transition={{
-        duration: 0.2,
-      }}
+    <div
       className="
-        bg-[#111827]
-        border border-slate-800
-        rounded-3xl
-        overflow-hidden
-        shadow-lg
+      bg-[#111827]
+      border border-white/10
+      rounded-3xl
+      p-5
+      shadow-xl
+      hover:shadow-orange-500/20
+      hover:-translate-y-1
+      transition-all
+      duration-300
       "
     >
-      {/* Product Image */}
-      <div className="h-44 bg-[#1F2937] overflow-hidden">
-        <img
-          src={
-            product.image ||
-            "https://via.placeholder.com/400x250"
-          }
-          alt={product.name}
-          className="
-            w-full
-            h-full
-            object-cover
-          "
-        />
-      </div>
+      <div className="text-center">
 
-      {/* Content */}
-      <div className="p-5">
-        {/* Category */}
-        <span
-          className="
-            inline-block
-            px-3 py-1
-            rounded-full
-            bg-orange-500/10
-            text-orange-500
-            text-xs
-            font-medium
-            mb-3
-          "
-        >
-          {product.category}
-        </span>
+        <div className="text-5xl mb-3">
+          🍔
+        </div>
 
-        {/* Name */}
         <h3 className="text-lg font-bold text-white">
           {product.name}
         </h3>
 
-        {/* Description */}
-        <p
-          className="
-            text-slate-400
-            text-sm
-            mt-2
-            line-clamp-2
-          "
-        >
-          {product.description}
+        <p className="text-slate-400 text-sm mt-1">
+          Fresh & Delicious
         </p>
 
-        {/* Footer */}
-        <div
+        <p className="text-2xl font-bold text-orange-500 mt-4">
+          ₹{product.price}
+        </p>
+
+        <button
+          onClick={() => addToCart(product)}
           className="
-            flex
-            items-center
-            justify-between
-            mt-5
+          mt-5
+          w-full
+          py-3
+          rounded-2xl
+          bg-gradient-to-r
+          from-orange-500
+          to-orange-600
+          text-white
+          font-semibold
+          hover:scale-[1.03]
+          transition-all
+          duration-300
           "
         >
-          <div>
-            <p className="text-slate-500 text-xs">
-              Price
-            </p>
+          + Add To Order
+        </button>
 
-            <h4 className="text-xl font-bold text-white">
-              ₹{product.price}
-            </h4>
-          </div>
-
-          <button
-            onClick={() =>
-              onAddToCart(product)
-            }
-            className="
-              flex
-              items-center
-              gap-2
-              bg-orange-500
-              hover:bg-orange-600
-              text-white
-              px-4
-              py-2
-              rounded-xl
-              transition
-            "
-          >
-            <FiPlus />
-            Add
-          </button>
-        </div>
       </div>
-    </motion.div>
+    </div>
   );
-};
+}
 
 export default ProductCard;
