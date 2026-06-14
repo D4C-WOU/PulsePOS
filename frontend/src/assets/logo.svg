@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Outer Ring -->
+  <circle cx="50" cy="50" r="45" fill="none" stroke="#F0D9A0" stroke-width="3" />
+  
+  <!-- Inner Ring -->
+  <circle cx="50" cy="50" r="41" fill="#0D1F16" stroke="#2D6A4F" stroke-width="1.5" />
+  
+  <!-- Coffee Cup Group -->
+  <g transform="translate(1, 4)">
+    <!-- Cup Body -->
+    <path d="M 32 36 L 66 36 C 66 52, 60 62, 49 62 C 38 62, 32 52, 32 36 Z" fill="#F0D9A0" stroke="#FEFAE0" stroke-width="1" />
+    
+    <!-- Cup Handle -->
+    <path d="M 65 40 C 73 40, 73 50, 65 50" fill="none" stroke="#F0D9A0" stroke-width="3.5" stroke-linecap="round" />
+    
+    <!-- Coffee Steam (S-Curves) -->
+    <path d="M 40 28 Q 43 23, 40 19 T 43 12" fill="none" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 48 30 Q 51 25, 48 21 T 51 14" fill="none" stroke="#C9A96E" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 56 29 Q 59 24, 56 20 T 59 13" fill="none" stroke="#52B788" stroke-width="2.5" stroke-linecap="round" />
+    
+    <!-- Cup Band Accent -->
+    <path d="M 33 46 L 65 46" fill="none" stroke="#132A1E" stroke-width="2" />
+  </g>
+</svg>
