@@ -23,6 +23,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({
+    project: "PulsePOS Backend API",
+    status: "Live",
+    version: "1.0.0",
+    github: "https://github.com/D4C-WOU/PulsePOS",
+  });
+});
+
 app.use("/api", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api", orderRoutes);
