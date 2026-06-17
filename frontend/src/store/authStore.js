@@ -1,44 +1,51 @@
+// src/store/authStore.js
+
 import { create } from "zustand";
 
-const useAuthStore = create((set) => ({
-  user: JSON.parse(
-    localStorage.getItem("user")
-  ) || null,
+const useAuthStore = create((set, get) => ({
+  user: null,
+  token: null,
+  isAuthenticated: false,
 
-  token:
-    localStorage.getItem("token") ||
-    null,
+  initializeAuth: () => {
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
 
-  isAuthenticated:
-    !!localStorage.getItem("token"),
-
-  login: (userData, token) => {
-    localStorage.setItem(
-      "user",
-      JSON.stringify(userData)
-    );
-
-    localStorage.setItem(
-      "token",
-      token
-    );
+    if (!token || !user) return;
 
     set({
-      user: userData,
+      token,
+      user: JSON.parse(user),
+      isAuthenticated: true,
+    });
+  },
+
+  login: (user, token) => {
+    localStorage.setItem("user", JSON.stringify(user));
+
+    localStorage.setItem("token", token);
+
+    set({
+      user,
       token,
       isAuthenticated: true,
     });
   },
 
   logout: () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    localStorage.clear();
 
     set({
       user: null,
       token: null,
       isAuthenticated: false,
     });
+  },
+
+  hasRole: (role) => {
+    const user = get().user;
+
+    return user?.role === role;
   },
 }));
 

@@ -1,127 +1,197 @@
-import { NavLink } from "react-router-dom";
 import {
-  FiHome,
-  FiPackage,
-  FiShoppingBag,
   FiGrid,
-  FiMonitor,
+  FiShoppingCart,
+  FiClipboard,
+  FiBox,
+  FiTag,
+  FiUsers,
+  FiBarChart2,
+  FiCoffee,
+  FiCreditCard,
   FiLogOut,
-  FiX,
 } from "react-icons/fi";
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
-  const menuItems = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: <FiHome size={20} />,
-    },
-    {
-      name: "Products",
-      path: "/products",
-      icon: <FiPackage size={20} />,
-    },
-    {
-      name: "Orders",
-      path: "/orders",
-      icon: <FiShoppingBag size={20} />,
-    },
-    {
-      name: "Tables",
-      path: "/tables",
-      icon: <FiGrid size={20} />,
-    },
-    {
-      name: "Kitchen",
-      path: "/kitchen",
-      icon: <FiMonitor size={20} />,
-    },
-  ];
+import { TbToolsKitchen2 } from "react-icons/tb";
+import { NavLink } from "react-router-dom";
 
+const sections = [
+  {
+    title: "OVERVIEW",
+    items: [
+      {
+        name: "Dashboard",
+        path: "/dashboard",
+        icon: FiGrid,
+      },
+    ],
+  },
+
+  {
+    title: "OPERATIONS",
+    items: [
+      {
+        name: "POS",
+        path: "/pos",
+        icon: FiShoppingCart,
+      },
+      {
+        name: "Orders",
+        path: "/orders",
+        icon: FiClipboard,
+      },
+      {
+        name: "Kitchen",
+        path: "/kitchen",
+        icon: TbToolsKitchen2,
+      },
+      {
+        name: "Tables",
+        path: "/tables",
+        icon: FiCoffee,
+      },
+    ],
+  },
+
+  {
+    title: "MENU",
+    items: [
+      {
+        name: "Products",
+        path: "/products",
+        icon: FiBox,
+      },
+      {
+        name: "Categories",
+        path: "/categories",
+        icon: FiTag,
+      },
+    ],
+  },
+
+  {
+    title: "BUSINESS",
+    items: [
+      {
+        name: "Customers",
+        path: "/customers",
+        icon: FiUsers,
+      },
+      {
+        name: "Payments",
+        path: "/payments",
+        icon: FiCreditCard,
+      },
+      {
+        name: "Reports",
+        path: "/reports",
+        icon: FiBarChart2,
+      },
+    ],
+  },
+
+  {
+    title: "ADMIN",
+    items: [
+      {
+        name: "Employees",
+        path: "/employees",
+        icon: FiUsers,
+      },
+    ],
+  },
+];
+
+const Sidebar = () => {
   return (
-    <>
-      {/* Mobile Overlay */}
-      {isOpen && (
-        <div
-          onClick={toggleSidebar}
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-        />
-      )}
+    <aside className="w-72 bg-[#0F172A] border-r border-slate-800 flex flex-col">
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:static top-0 left-0 z-50
-          h-screen w-64
-          bg-[#111827]
-          border-r border-slate-800
-          transform transition-transform duration-300
-          ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0
-        `}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-800">
-          <h1 className="text-2xl font-bold text-white">
-            PulsePOS
-          </h1>
+      <div className="h-20 px-6 flex flex-col justify-center border-b border-slate-800">
+        <h1 className="text-2xl font-bold text-orange-500">
+          PulsePOS
+        </h1>
 
-          <button
-            onClick={toggleSidebar}
-            className="lg:hidden text-slate-400 hover:text-white"
-          >
-            <FiX size={24} />
-          </button>
-        </div>
+        <p className="text-xs text-slate-500">
+          Restaurant ERP
+        </p>
+      </div>
 
-        {/* Navigation */}
-        <nav className="p-4">
-          <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.name}>
-                <NavLink
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `
-                    flex items-center gap-3
-                    px-4 py-3 rounded-xl
-                    transition-all duration-200
+      <div className="flex-1 overflow-y-auto px-4 py-6">
 
-                    ${
-                      isActive
+        {sections.map((section) => (
+          <div key={section.title} className="mb-8">
+
+            <p className="text-xs font-semibold text-slate-500 mb-3 px-3">
+              {section.title}
+            </p>
+
+            <div className="space-y-1">
+
+              {section.items.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <NavLink
+                    key={item.name}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `
+                      flex items-center gap-3
+                      px-4 py-3
+                      rounded-xl
+                      transition-all
+
+                      ${isActive
                         ? "bg-orange-500 text-white shadow-lg"
                         : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                      }
+                    `
                     }
-                  `
-                  }
-                >
-                  {item.icon}
-                  <span className="font-medium">
-                    {item.name}
-                  </span>
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+                  >
+                    <Icon size={18} />
+                    <span>{item.name}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-800">
+      <div className="border-t border-slate-800 p-4">
+
+        <div className="bg-slate-900 rounded-2xl p-4">
+
+          <h3 className="font-semibold text-white">
+            Admin User
+          </h3>
+
+          <p className="text-xs text-slate-500">
+            Restaurant Manager
+          </p>
+
           <button
             className="
-              w-full flex items-center gap-3
-              px-4 py-3 rounded-xl
+              mt-4
+              w-full
+              flex
+              items-center
+              justify-center
+              gap-2
+              bg-red-500/10
               text-red-400
-              hover:bg-red-500/10
-              transition
+              py-2
+              rounded-xl
             "
           >
-            <FiLogOut size={20} />
+            <FiLogOut />
             Logout
           </button>
+
         </div>
-      </aside>
-    </>
+
+      </div>
+
+    </aside>
   );
 };
 

@@ -7,6 +7,11 @@ import {
   FiEyeOff,
 } from "react-icons/fi";
 
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authApi";
+import useAuthStore from "../store/authStore";
+import toast from "react-hot-toast";
+
 const Login = () => {
   const [showPassword, setShowPassword] =
     useState(false);
@@ -16,12 +21,44 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Login Data:", formData);
+    (async () => {
+      try {
+        setLoading(true);
 
-    // Navigate to Dashboard later
+        const data = await loginUser(
+          formData.email,
+          formData.password,
+        );
+
+        // Expecting { user, token }
+        const { user, token } = data;
+
+        if (token && user) {
+          useAuthStore.getState().login(user, token);
+
+          toast.success("Welcome back, " + user.name);
+
+          navigate("/dashboard");
+        } else {
+          throw new Error(
+            data.message || "Invalid credentials",
+          );
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error(
+          err.response?.data?.message || err.message || "Login failed",
+        );
+      } finally {
+        setLoading(false);
+      }
+    })();
   };
 
   return (
